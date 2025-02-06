@@ -68,6 +68,5 @@ async def parse_pdf(data: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/healthCheck")
-async def checkHealth(data: dict):
-     check = True;
-     return {"success":check}
+async def checkHealth():
+     return {"success": True}
