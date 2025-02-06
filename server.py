@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import requests
 import pdfplumber
 import re
@@ -6,6 +7,14 @@ import json
 from io import BytesIO
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change this to specific origins for security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def download_pdf(pdf_url):
     response = requests.get(pdf_url)
@@ -57,3 +66,8 @@ async def parse_pdf(data: dict):
         return {"data": questions}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/healthCheck")
+async def checkHealth(data: dict):
+     check = True;
+     return {"success":check}
